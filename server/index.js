@@ -8,7 +8,7 @@ const axios = require('axios');
 
 
 app.get('/', async(req,res) => {
-    const weather = await axios.get(`https://api.openweathermap.org/data/3.0/onecall?lat=-16.680519&lon=-49.256130&appid=${process.env.api_key}`);
+    const weather = await axios.get(`${process.env.API_URL_OPENUV}${process.env.API_KEY}`);
     res.send(weather.data)
     console.log(weather.data);
 });
@@ -16,5 +16,3 @@ app.get('/', async(req,res) => {
 app.listen(port, hostname, () => {
     console.log(`The server is running on ${hostname}${port}`)
 });
-
- 
