@@ -1,18 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import GooglePlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete';
-import { useNavigate } from 'react-router-dom';
-/* import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom"; */
 
 
 const Form = () => {
-  
-  const navigate = useNavigate()
 
   const [ currentClientPlace, setCurrentClientPlace ] = useState()
-  //const navigate = useNavigate()
+  const [weather, setWeather] = useState([]);
 
   console.log(currentClientPlace?.label)
 
@@ -36,25 +29,37 @@ const Form = () => {
         redirect: 'follow'
       };
       fetch("http://localhost:3001", requestOptions)
+        .then((data) => data.json())
+        .then((data) => setWeather(data))
         .catch(error => console.log('error', error));
       console.log('Successfully got latitude and longitude', { lat, lng })
      
-      navigate('/forecast', {state: {data: requestOptions.data}})
-   
+      
       
     });
    }  
-  }, [currentClientPlace, navigate])
+  }, [currentClientPlace])
   
   return (
-    <div className='w-full h-[100vh] flex justify-center items-center'>
-        <GooglePlacesAutocomplete
-      apiKey={process.env.REACT_APP_API_URL}
-      selectProps={{value:currentClientPlace,
-      onChange:setCurrentClientPlace}}
-    />
-        <button className='rounded-md bg-green-500'>Search</button>
+    <div className="w-full h-[100vh] flex flex-col items-center p-5">
+      <h2 className="mb-5">UV Monitor </h2>
+      <GooglePlacesAutocomplete
+        apiKey={process.env.REACT_APP_API_URL}
+        selectProps={{
+          value: currentClientPlace,
+          onChange: setCurrentClientPlace,
+        }}
+      />
+      {weather.map((item) => (
+        <div className="bg-gray-300 p-3 rounded-lg mb-4">
+          <span>Data/Hora - </span>
+          <span>{item.datetime}</span>
+          <span>Radiacao - </span>
+          <span>{item.uvi}</span>
+        </div>
+      ))}
     </div>
+
   )
 }
 
