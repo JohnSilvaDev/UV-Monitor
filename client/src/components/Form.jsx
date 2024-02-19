@@ -5,7 +5,7 @@ import GooglePlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-goo
 const Form = () => {
 
   const [ currentClientPlace, setCurrentClientPlace ] = useState()
-  const [weather, setWeather] = useState([]);
+  const [weatherToday, setWeather] = useState([]);
 
   console.log(currentClientPlace?.label)
 
@@ -50,10 +50,9 @@ const Form = () => {
           onChange: setCurrentClientPlace,
         }}
       />
-      {weather.map((item) => (
+      {weatherToday.map((item) => (
         <div className="bg-gray-300 p-3 rounded-lg mb-4">
-          <span>Data/Hora - </span>
-          <span>{item.datetime}</span>
+          <span>{item.datetime}</span><br></br>
           <span>Radiacao - </span>
           <span>{item.uvi}</span>
         </div>

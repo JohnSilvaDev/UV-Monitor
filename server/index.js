@@ -19,25 +19,31 @@ app.post('/', async (req,res) => {
   console.log(req.body)
   let lat = req.body.lat
   let lng = req.body.lng
-  console.log(`${lat}${lng}`);
+  //console.log(`${lat}${lng}`);
   const url = `${process.env.API_URL_OPEN}onecall?lat=${lat}&exclude=minutely,daily&lon=${lng}&units=metric&appid=${process.env.API_KEY}`;
-  console.log(url);
+  //console.log(url);
   const weather = await axios.get(url);
   
-  console.log(weather.data);
+  //console.log(weather.data);
   
   const dataparsed = weather.data.hourly.map((item) => {
     const myUnixTimestamp = item.dt
     const newDateTime = new Date(myUnixTimestamp * 1000);
 
     return {
-      timestamp: item.dt,
+      timestamp: newDateTime,
       datetime: newDateTime.toLocaleTimeString(),
       uvi: item.uvi,
     };
-  });
+    
 
-  res.send(dataparsed);
+  });
+  const weatherToday = dataparsed.slice(0, dataparsed.length / 2);
+  const weatherTomorrow = dataparsed.slice(dataparsed.length / 2, dataparsed.length);
+  console.log(weatherToday);
+  //console.log(weatherTomorrow);
+  //console.log(dataparsed);
+  res.send(weatherToday);
 });
 
 
