@@ -1,6 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import GooglePlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete';
+import {
+  Chart as ChartJS,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  Legend
+} from 'chart.js';
+import { Bar } from 'react-chartjs-2';
 
+ChartJS.register(
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  Legend
+)
 
 const Form = () => {
 
@@ -33,13 +49,13 @@ const Form = () => {
         .then((data) => setWeather(data))
         .catch(error => console.log('error', error));
       console.log('Successfully got latitude and longitude', { lat, lng })
-     
-      
-      
     });
    }  
   }, [currentClientPlace])
   
+  const chartData = {
+    labels: [weatherToday.map(item => { datetime })]
+  }
   return (
     <div className="w-full h-[100vh] flex flex-col items-center p-5">
       <h2 className="mb-5">UV Monitor </h2>
@@ -50,13 +66,19 @@ const Form = () => {
           onChange: setCurrentClientPlace,
         }}
       />
-      {weatherToday.map((item) => (
+      <div>
+        <Bar
+          data = {chartData}
+          //options = {options}
+        ></Bar>
+      </div>
+      {/* {weatherToday.map((item) => (
         <div className="bg-gray-300 p-3 rounded-lg mb-4">
           <span>{item.datetime}</span><br></br>
           <span>Radiacao - </span>
           <span>{item.uvi}</span>
-        </div>
-      ))}
+        </div> 
+      ))}*/}
     </div>
 
   )
