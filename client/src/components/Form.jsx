@@ -50,7 +50,18 @@ const Form = () => {
       {
         label: 'UV Index',
         data: weatherToday.map(item => item.uvi),
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        backgroundColor: (context) => [
+          const chart = context.chart;
+          const { ctx, chartArea } = chart;
+          if(!chartArea) {
+            return null
+          }
+          if(context.dataIndex === 0) {
+            return getGradient(chart);
+          } else {
+            return 'black';
+          }
+        },
       }
     ],
   };
@@ -60,6 +71,7 @@ const Form = () => {
     scales: {
       y: {
         beginAtZero: true,
+        responsive: true
       },
     },
   };
@@ -74,7 +86,7 @@ const Form = () => {
           onChange: setCurrentClientPlace,
         }}
       />
-      <div style={{ width: '600px', height: '400px', marginTop: '20px' }}>
+      <div style={{ width: '1500px', height: '1000px', marginTop: '20px' }}>
         <Bar data={chartData} options={options} />
       </div>
     </div>
